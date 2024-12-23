@@ -97,6 +97,11 @@ Critical sections of the `Spiff++`documentation are
     b: (( &tempoarary )) # This node will be omitted from final output
     ```
 
+    or access it through the `stub` function 
+
+    ```
+    a: (( stub(b) ))
+
 Note that `Spiff++` discards some notes, such as those marked as `(( &temporary ))`.   For more detail refer to the [documentation](https://github.com/mandelsoft/spiff).
 
 # Workflow 
