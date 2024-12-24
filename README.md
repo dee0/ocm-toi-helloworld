@@ -172,6 +172,9 @@ Note that `Spiff++` discards some notes, such as those marked as `(( &temporary 
     - `/toi/inputs/config`  Output from step #2.  Configuration after being spiffed 
     - `/toi/inputs/ocmrepo`  Component descriptor downloaded from source repository
 
+8. Use docker to run a container with the arguments `[action] [component version]`.  The image will be the one named in the `imageRef` field of `toiExecutor`.   OCM assumes the image has an entry point defined.
+
+9. Copy `/toi/outputs` from within the container to the current working directory or the location specified on the OCM command line.
 
 # Providing template configs to users
 
