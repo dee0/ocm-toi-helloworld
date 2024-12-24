@@ -1,0 +1,3 @@
+toiExecutorTemplateLibrary1:
+  data: toiExecutorTemplateLibrary1Data
+  fromLibrary2: (( stub(toiExecutorTemplateLibrary2) ))
