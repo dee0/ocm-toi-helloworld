@@ -176,6 +176,19 @@ Note that `Spiff++` discards some notes, such as those marked as `(( &temporary 
 
 9. Copy `/toi/outputs` from within the container to the current working directory or the location specified on the OCM command line.
 
+## Simulating spiff++ operations of the workflow 
+
+The script `scripts/simulateTOIWorkflowWithSpiffCLI.sh` simulates the spiff++ operations steps #2, #5 and #6 of the workflow described above.
+
+Note there are a few aspects of it that are not realistic :
+- In the simulation of step 2, `./toiPackage/toiPackageExecutorConfig.yaml`, which is part of the `toiPackage`, wouldn't have references to the libraries named in the `toiExecutor`.
+
+- In the simulation of step 5, `./userInput/parametersFromCLI.yaml`, which is provided by the user on the commandline, wouldn't have references to the libraries named in the `toiPackage`.
+
+- In the simulation of step 5 the lambda expression defined in `getCredentials.yaml` used to simulate the [getCredentials](https://ocm.software/docs/cli-reference/help/toi-bootstrapping/#input-mapping-for-executors) function that OCM defines during spiff++ execution.
+
+
+
 # Providing template configs to users
 
 The OCM cli also supports a command of the form :
