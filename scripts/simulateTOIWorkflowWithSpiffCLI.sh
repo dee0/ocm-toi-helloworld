@@ -24,6 +24,7 @@ spiff++ merge ./toiExecutor/toiExecutorConfig.yaml ./toiExecutor/toiPackageExecu
 # Perform step #5 of the TOI process 
 spiff++ merge ./toiPackage/toiPackageConfigTemplate.yaml ./userInput/parametersFromCLI.yaml ./toiPackage/toiPackageTemplateLibrary1.yaml ./toiPackage/toiPackageTemplateLibrary2.yaml ./toiPackage/getCredentials.yaml |& tee ${TMP}/ocm-toi-step5-output.yaml
 
-
+# Perform step #6 of the TOI process 
+spiff++ merge ./toiPackage/toiPackageExecutorParameterMapping.yaml ${TMP}/ocm-toi-step5-output.yaml |& tee ${INPUTS}/parameters
 
 
