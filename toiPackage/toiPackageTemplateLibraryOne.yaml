@@ -1,0 +1,3 @@
+toiPackageTemplateLibraryOne:
+  data: toiPackageTemplateLibraryOneData
+  fromLibrary2: (( stub(toiPackageTemplateLibraryTwo) ))

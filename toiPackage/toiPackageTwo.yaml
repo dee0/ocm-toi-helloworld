@@ -1,0 +1,93 @@
+description: installPackageTwo
+executors: # The executor used will be the first with no actions or the first an action matching what was specified by the user on the CLI.  If no match then error
+- actions:
+  - actionOne
+  - actionTwo
+  resourceRef: # Doc says this is an array but it is really an optional field.  Issue [339](https://github.com/open-component-model/ocm-project/issues/339)
+               # It can be an ociimage or a toiExecutor reource type.
+    resource:
+      name: toi-executor-one 
+  # Should change simulation to use config below instead of stand alone file
+  config:
+    toiPackageExecutorConfig: 
+      data: toiPackageExecutorConfigData 
+      fromLibraryOne: (( stub(toiExecutorTemplateLibraryOne) ))
+      fromLibraryTwo: (( stub(toiExecutorTemplateLibraryTwo) )) 
+  # Should change simulation to use parameterMapping below instead of stand alone file
+  parameterMapping:
+    toiPackageExecutorParameterMapping:
+      data: toiPackageExecutorParameterMapData
+      fromToiPackageConfigTemplate: (( stub(toiPackageConfigTemplate) ))
+      fromCredentials:
+        name: (( getCredentials("myExecutorOCI", "username") ))
+        password: (( getCredentials("myExecutorOCI", "password") ))
+  credentialMapping:
+    myPackageOCI: myExecutorOCI
+  outputs: # It is an error to try and map a non-existent executor output.
+    inputs/config: config
+    inputs/ocmconfig: ocmconfig
+    inputs/ocmrepo: ocmrepo
+    inputs/parameters: parameters
+    cmdline: cmdline
+    environ: environ
+- actions:
+  - actionThree
+  - actionfour
+  resourceRef: # Doc says this is an array but it is really an optional field.  Issue [339](https://github.com/open-component-model/ocm-project/issues/339)
+               # It can be an ociimage or a toiExecutor reource type.
+    resource:
+      name: toi-executor-two 
+  # Should change simulation to use config below instead of stand alone file
+  config:
+    toiPackageExecutorConfig: 
+      data: toiPackageExecutorConfigData 
+      fromLibraryOne: (( stub(toiExecutorTemplateLibraryOne) ))
+      fromLibraryTwo: (( stub(toiExecutorTemplateLibraryTwo) )) 
+  # Should change simulation to use parameterMapping below instead of stand alone file
+  parameterMapping:
+    toiPackageExecutorParameterMapping:
+      data: toiPackageExecutorParameterMapData
+      fromToiPackageConfigTemplate: (( stub(toiPackageConfigTemplate) ))
+      fromCredentials:
+        name: (( getCredentials("myExecutorOCI", "username") ))
+        password: (( getCredentials("myExecutorOCI", "password") ))
+  credentialMapping:
+    myPackageOCI: myExecutorOCI
+  outputs: # It is an error to try and map a non-existent executor output.
+    inputs/config: config
+    inputs/ocmconfig: ocmconfig
+    inputs/ocmrepo: ocmrepo
+    inputs/parameters: parameters
+    cmdline: cmdline
+    environ: environ
+configTemplate:
+  toiPackageConfigTemplate:
+    data: toiPackageConfigTemplateData 
+    fromParamsFromCLI: (( stub(paramsFromCLI) ))
+    fromLibraryOne: (( stub(toiPackageTemplateLibraryOne) ))
+    fromLibraryTwo: (( stub(toiPackageTemplateLibraryTwo) )) 
+#configScheme: # Should sort out this after things are working.  Is RawMessage ( like configTemplate above )
+templateLibraries:
+- resource:
+    name: toi-package-template-library-one
+- resource:
+    name: toi-package-template-library-two
+credentials:
+  myPackageOCI: 
+    consumerId:
+      type: OCIRegistry
+    description: Description of myPackageOCI
+    properties: 
+      username: OCI repository username  
+      password: OCI repository password  
+    optional: false
+additionalResources:
+  configFile:
+    resource:
+      name: toi-package-additional-resource-config
+  credentialsFile:
+    resource:
+      name: toi-package-additional-resource-credentials
+  readme.txt: # OCM TOI doesn't seem to do anything with this
+    resource:
+      name: toi-package-additional-resource-readme

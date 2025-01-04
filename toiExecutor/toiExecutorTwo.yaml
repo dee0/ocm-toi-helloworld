@@ -1,0 +1,40 @@
+imageRef: # Cross checked with doc and code
+    resource:
+      name: toi-installer-image
+# configTemplate cross checked with doc and code
+configTemplate:
+  toiExecutorConfig:
+    data: toiExecutorConfigData
+    fromToiPackageExecutorConfig: (( stub(toiPackageExecutorConfig) ))
+#configScheme: # Raw json message like configTemplate above.  Cross checkeds
+templateLibraries: # Cross checked with doc and code
+- resource:
+    name: toi-executor-template-library-one
+- resource:
+    name: toi-executor-template-library-two
+credentials:
+  myExecutorOCI: 
+    consumerId:
+      type: OCIRegistry
+    description: Description of myPackageOCI
+    properties: 
+      username: OCI repository username  
+      password: OCI repository password  
+    optional: false
+outputs: 
+  inputs/config:
+    description: config copied from /toi/inputs
+  inputs/ocmconfig:
+    description: ocmconfig copied from /toi/inputs
+  inputs/ocmrepo:
+    description: ocmrepo copied from /toi/inputs
+  inputs/parameters:
+    description: parameters copied from /toi/inputs
+  cmdline:
+    description: cmdline copied from /proc dir, in the container, of the install process in the container
+  environ:
+    description: environ copied from /proc dir, in the container, of the install process in the container
+actions: # NOTE: is in code but not documented.  Lack of doc raised in [340](https://github.com/open-component-model/ocm-project/issues/340)
+         # Field is optional.  If it exists then action passed on CLI must match one in the list
+  - actionThree
+  - actionFour

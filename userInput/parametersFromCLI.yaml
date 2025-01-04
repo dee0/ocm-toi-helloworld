@@ -1,4 +1,4 @@
 paramsFromCLI: 
   data: paramsFromCLIData 
-  fromLibrary1: (( stub(toiPackageTemplateLibrary1) ))
-  fromLibrary2: (( stub(toiPackageTemplateLibrary2) )) 
+  fromLibraryOne: (( stub(toiPackageTemplateLibraryOne) ))
+  fromLibraryTwo: (( stub(toiPackageTemplateLibraryTwo) )) 

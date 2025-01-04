@@ -1,4 +1,12 @@
 
+function printError {
+  ec=$?
+  : Exiting with exit code $ec 
+  exit $ec 
+}
+
+trap printError EXIT
+
 set -xe -o pipefail 
 
 echo start 
