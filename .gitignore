@@ -2,3 +2,5 @@ tmp/
 tmp2/
 
 ocm/component-archive/
+userInput/.cache/
+userInput/.config/
