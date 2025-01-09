@@ -18,7 +18,7 @@ credentials:
       type: OCIRegistry
     description: Description of myPackageOCI
     properties: 
-      username: OCI repository username  
+      user: OCI repository user  
       password: OCI repository password  
     optional: false
 outputs: 

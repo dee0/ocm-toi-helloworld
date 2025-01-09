@@ -160,7 +160,7 @@ Note that `Spiff++` discards some notes, such as those marked as `(( &temporary 
       - hasCredentials(string[,string])bool 
       - getCredentials(string[,string]) map[string}string | string 
 
-    To be clear, the above functions take a string argument and an optional second string argument.  The first is the key from the credential request.   If the second argument is not passed then the expression is looking for, or retrieving, a map containing the properties, e.g. username and password, of specified credential.   If a second argument is passed then the functions look for, or retrieve, the proprety of the same name from the credential identified by the first argument.
+    To be clear, the above functions take a string argument and an optional second string argument.  The first is the key from the credential request.   If the second argument is not passed then the expression is looking for, or retrieving, a map containing the properties, e.g. user and password, of specified credential.   If a second argument is passed then the functions look for, or retrieve, the proprety of the same name from the credential identified by the first argument.
   
 6. perform 'parameter mapping' using 
 

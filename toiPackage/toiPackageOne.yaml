@@ -19,7 +19,7 @@ executors: # The executor used will be the first with no actions or the first an
       data: toiPackageExecutorParameterMapData
       fromToiPackageConfigTemplate: (( stub(toiPackageConfigTemplate) ))
       fromCredentials:
-        name: (( getCredentials("myExecutorOCI", "username") ))
+        name: (( getCredentials("myExecutorOCI", "user") ))
         password: (( getCredentials("myExecutorOCI", "password") ))
   credentialMapping:
     myPackageOCI: myExecutorOCI
@@ -49,7 +49,7 @@ executors: # The executor used will be the first with no actions or the first an
       data: toiPackageExecutorParameterMapData
       fromToiPackageConfigTemplate: (( stub(toiPackageConfigTemplate) ))
       fromCredentials:
-        name: (( getCredentials("myExecutorOCI", "username") ))
+        name: (( getCredentials("myExecutorOCI", "user") ))
         password: (( getCredentials("myExecutorOCI", "password") ))
   credentialMapping:
     myPackageOCI: myExecutorOCI
@@ -78,7 +78,7 @@ credentials:
       type: OCIRegistry
     description: Description of myPackageOCI
     properties: 
-      username: OCI repository username  
+      user: OCI repository user  
       password: OCI repository password  
     optional: false
 additionalResources:
