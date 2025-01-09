@@ -1,11 +1,15 @@
 # Table of contents
 
+- [Prerequisites](#prerequisites)
 - [Purpose of the tiny ocm installer](#purpose-of-the-tiny-ocm-installer)
 - [Setup summary ( simple case )](#setup-summary--simple-case-)
 - [Essential spiff++ background information](#essential-spiff-background-information)
 - [Workflow](#workflow)
 - [Providing template configs to users](#providing-template-configs-to-users)
 
+# Prerequisites 
+
+The sample in this repo require OCM > 0.19.0. See [issue 359](https://github.com/open-component-model/ocm-project/issues/359).
 
 # Purpose of the tiny ocm installer 
 
