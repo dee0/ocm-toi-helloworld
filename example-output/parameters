@@ -1,0 +1,21 @@
+toiPackageExecutorParameterMapping:
+  data: toiPackageExecutorParameterMapData
+  fromCredentials:
+    name: myUser
+    password: myPassword
+  fromToiPackageConfigTemplate:
+    data: toiPackageConfigTemplateData
+    fromLibraryOne:
+      data: toiPackageTemplateLibraryOneData
+      fromLibrary2:
+        data: toiPackageTemplateLibraryTwoData
+    fromLibraryTwo:
+      data: toiPackageTemplateLibraryTwoData
+    fromParamsFromCLI:
+      data: paramsFromCLIData
+      fromLibraryOne:
+        data: toiPackageTemplateLibraryOneData
+        fromLibrary2:
+          data: toiPackageTemplateLibraryTwoData
+      fromLibraryTwo:
+        data: toiPackageTemplateLibraryTwoData

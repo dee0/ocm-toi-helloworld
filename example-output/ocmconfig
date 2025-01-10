@@ -1,0 +1,23 @@
+configurations:
+- credentials:
+  - credentials:
+      lastUpdated: "2024-12-26T11:48:55Z"
+      password: 'myPassword'
+      previousPassword: myPreviousPassword
+      user: myUser
+    credentialsName: myExecutorOCI
+  repoName: default
+  type: memory.credentials.config.ocm.software
+- consumers:
+  - credentials:
+    - credentialsName: myExecutorOCI
+      repoName: default
+      type: Memory
+    identity:
+      type: OCIRegistry
+  type: credentials.config.ocm.software
+- contextType: default
+  settings:
+    defaultLevel: Warn
+  type: logging.config.ocm.software
+type: generic.config.ocm.software

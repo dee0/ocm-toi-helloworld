@@ -1,0 +1,10 @@
+toiExecutorConfig:
+  data: toiExecutorConfigData
+  fromToiPackageExecutorConfig:
+    data: toiPackageExecutorConfigData
+    fromLibraryOne:
+      data: toiExecutorTemplateLibraryOneData
+      fromLibraryTwo:
+        data: toiExecutorTemplateLibraryTwoData
+    fromLibraryTwo:
+      data: toiExecutorTemplateLibraryTwoData
