@@ -1,4 +1,0 @@
-toiPackageExecutorConfig: 
-  data: toiPackageExecutorConfigData 
-  fromLibrary1: (( stub(toiExecutorTemplateLibrary1) ))
-  fromLibrary2: (( stub(toiExecutorTemplateLibrary2) )) 
