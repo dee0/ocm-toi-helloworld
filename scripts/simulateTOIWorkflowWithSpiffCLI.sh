@@ -19,12 +19,20 @@ rm -rf $ROOT || :
 mkdir -p $INPUTS || :
 
 # Perform step #2 of the TOI process 
-spiff++ merge ./toiExecutor/toiExecutorConfigTemplate.yaml ./toiPackage/toiPackageExecutorConfig.yaml ./toiExecutor/toiExecutorTemplateLibrary1.yaml ./toiExecutor/toiExecutorTemplateLibrary2.yaml |& tee ${INPUTS}/config
+spiff++ --features control merge <(yq '.configTemplate'  ./toiExecutor/toiExecutorOne.yaml) \
+  <(yq '.executors[0].config' ./toiPackage/toiPackageOne.yaml) \
+  ./toiExecutor/toiExecutorTemplateLibraryOne.yaml \
+  ./toiExecutor/toiExecutorTemplateLibraryTwo.yaml |& tee ${INPUTS}/config
 
 # Perform step #5 of the TOI process 
-spiff++ merge ./toiPackage/toiPackageConfigTemplate.yaml ./userInput/parametersFromCLI.yaml ./toiPackage/toiPackageTemplateLibrary1.yaml ./toiPackage/toiPackageTemplateLibrary2.yaml ./toiPackage/getCredentials.yaml |& tee ${TMP}/ocm-toi-step5-output.yaml
+spiff++ --features control merge <(yq '.configTemplate' toiPackage/toiPackageOne.yaml) \
+  ./userInput/parametersFromCLI.yaml \
+  ./toiPackage/toiPackageTemplateLibraryOne.yaml \
+  ./toiPackage/toiPackageTemplateLibraryTwo.yaml |& tee ${TMP}/ocm-toi-step5-output.yaml
 
 # Perform step #6 of the TOI process 
-spiff++ merge ./toiPackage/toiPackageExecutorParameterMapping.yaml ${TMP}/ocm-toi-step5-output.yaml |& tee ${INPUTS}/parameters
+spiff++ --features control merge <(yq '.executors[0].parameterMapping' toiPackage/toiPackageOne.yaml) \
+  ${TMP}/ocm-toi-step5-output.yaml \
+  ./toiPackage/getCredentials.yaml |& tee ${INPUTS}/parameters
 
 

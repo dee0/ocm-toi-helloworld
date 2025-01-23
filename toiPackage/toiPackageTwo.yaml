@@ -19,8 +19,8 @@ executors: # The executor used will be the first with no actions or the first an
       data: toiPackageExecutorParameterMapData
       fromToiPackageConfigTemplate: (( stub(toiPackageConfigTemplate) ))
       fromCredentials:
-        name: (( getCredentials("myExecutorOCI", "user") ))
-        password: (( getCredentials("myExecutorOCI", "password") ))
+        name: (( stub(toiPackageConfigTemplate).fromLibraryOne.getCredentials("myExecutorOCI", "user") ))
+        password: (( stub(toiPackageConfigTemplate).fromLibraryOne.getCredentials("myExecutorOCI", "password") ))
   credentialMapping:
     myPackageOCI: myExecutorOCI
   outputs: # It is an error to try and map a non-existent executor output.
@@ -49,8 +49,8 @@ executors: # The executor used will be the first with no actions or the first an
       data: toiPackageExecutorParameterMapData
       fromToiPackageConfigTemplate: (( stub(toiPackageConfigTemplate) ))
       fromCredentials:
-        name: (( getCredentials("myExecutorOCI", "user") ))
-        password: (( getCredentials("myExecutorOCI", "password") ))
+        name: (( stub(toiPackageConfigTemplate).fromLibraryOne.getCredentials("myExecutorOCI", "user") ))
+        password: (( stub(toiPackageConfigTemplate).fromLibraryOne.getCredentials("myExecutorOCI", "password") ))
   credentialMapping:
     myPackageOCI: myExecutorOCI
   outputs: # It is an error to try and map a non-existent executor output.
