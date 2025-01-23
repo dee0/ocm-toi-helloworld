@@ -34,7 +34,7 @@ resources:
   input: 
     type: file 
     path: ../toiPackage/toiPackageTemplateLibraryTwo.yaml
-- name: &toi-package-additional-resource-config toi-package-additional-resource-config
+- name: toi-package-additional-resource-config
   version: *version
   type: yaml # Must be type yaml otherwise ocm toi configuration bootstrap won't find the resource to extract
   input: 
