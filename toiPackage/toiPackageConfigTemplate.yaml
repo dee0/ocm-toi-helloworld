@@ -1,8 +1,0 @@
-toiPackageConfigTemplate:
-  data: toiPackageConfigTemplateData 
-  fromParamsFromCLI: (( stub(paramsFromCLI) ))
-  fromLibrary1: (( stub(toiPackageTemplateLibrary1) ))
-  fromLibrary2: (( stub(toiPackageTemplateLibrary2) )) 
-  fromCredentials:
-    name: (( stub(getCredentials)("someServer", "name") ))
-    password: (( stub(getCredentials)("someServer", "password") ))
