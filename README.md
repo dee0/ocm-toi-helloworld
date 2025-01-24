@@ -4,7 +4,10 @@
 - [Purpose of the tiny ocm installer](#purpose-of-the-tiny-ocm-installer)
 - [Setup summary ( simple case )](#setup-summary--simple-case-)
 - [Essential spiff++ background information](#essential-spiff-background-information)
-- [Workflow](#workflow)
+- [toiPackage vs ExecutorSpecification vs toiExecutor](#installer-model-overview)
+- [OCM install workflow](#workflow)
+- [Examples](#examples)
+  - [Complex - multiple of inputs of each resource type ](#complex---multiple-of-inputs-of-each-resource-type)
 - [Providing template configs to users](#providing-template-configs-to-users)
 
 # Prerequisites 
@@ -42,12 +45,12 @@ Your OCM component version must contain an oci image resource with the following
 /
 └── toi
     ├── inputs
-    │   ├── config      configuration from package specification
-    │   ├── ocmrepo     OCM filesystem repository containing the complete
+    │   ├── config      ( Added at runtime ) configuration from package specification
+    │   ├── ocmrepo     ( Added at runtime ) OCM filesystem repository containing the complete
     │   │               component version of the package
-    │   └── parameters  merged complete parameter file
+    │   └── parameters  ( Added at runtime ) merged complete parameter file
     ├── outputs
-    │   ├── <out>       any number of arbitrary output data provided
+    │   ├── <out>       ( Added at runtime ) any number of arbitrary output data provided
     │   │               by executor
     │   └── ...
     └── run             good practice: typical location for the executed command
@@ -108,7 +111,19 @@ Critical sections of the `Spiff++`documentation are
 
 Note that `Spiff++` discards some notes, such as those marked as `(( &temporary ))`.   For more detail refer to the [documentation](https://github.com/mandelsoft/spiff).
 
-# Workflow 
+# toiPackage vs ExecutorSpecification vs toiExecutor
+
+[toiPackage](https://ocm.software/docs/cli-reference/help/toi-bootstrapping/#the-codetoipackagecode-resource) is top level of a TOI installer.   Essentially it defines the interface that will be present to the user.  This includes what actions the installer provides.  The actions are defined with [ExecutorSpecifications](https://ocm.software/docs/cli-reference/help/toi-bootstrapping/#executorspecification)
+
+
+While it is possible for a `component version` to contain multiple toiPackages this generally isn't useful.
+
+An [ExecutorSpecifications](https://ocm.software/docs/cli-reference/help/toi-bootstrapping/#executorspecification) specified, possibly indirectly, a runnable docker image.  It also describes the inputs and outputs required by that image.  In the indirect case, the ExecutorSpecification references a [toiExecutor](https://ocm.software/docs/cli-reference/help/toi-bootstrapping/#the-codetoiexecutorcode-resource) resource while in the direct case it references an `ociImage`.
+
+[toiExecutor](https://ocm.software/docs/cli-reference/help/toi-bootstrapping/#the-codetoiexecutorcode-resource) provides a way to re-use an image across multiple toiPackages. ( Generally the toiPackages would be in separate component versions, see above )  For example, suppose you want to use [this](https://hub.docker.com/r/infoblox/helm) helm image in multiple toiPackages and you, more or less, wanted to use it in the same way in all case.  You could define a toiExecutor that you leverage in the toiPackages of multiple component versions.
+
+
+# OCM install workflow 
 
 1. Determine and load credentials file.   Will either be passed via -c on command line or will be TOICredentials in the current dir.
     The file is just an ocm configfile where only the credentials will be used 
@@ -116,8 +131,8 @@ Note that `Spiff++` discards some notes, such as those marked as `(( &temporary 
 2. Make executor config from:
    - toiExecutor.configTemplate.  This is a spiff template
    - toiPackage.executors[].config.  Despite what OCM documentation says, this is a spiff template
-   - toiExecutor.templateLibraries.  These are references to resources in the component version
-   - toiExecutor.schema.  This is a reference to a json schema in the component version
+   - toiExecutor.templateLibraries.  These are references to resources in the component version *( optional )*
+   - toiExecutor.schema.  This is a reference to a json schema in the component version *(optional)*
   
    Basically it is like `OCM` is running the command 
 
@@ -180,21 +195,124 @@ Note that `Spiff++` discards some notes, such as those marked as `(( &temporary 
 
 9. Copy `/toi/outputs` from within the container to the current working directory or the location specified on the OCM command line.
 
-## Simulating spiff++ operations of the workflow 
+# Examples 
 
-The script `scripts/simulateTOIWorkflowWithSpiffCLI.sh` simulates the spiff++ operations steps #2, #5 and #6 of the workflow described above.
+The examples below all use the image `ghcr.io/dee0/ocm/toi/helloworld:1.0.3`.  This image was built from the `Dockerfile` in the root of this repo.  The image is just running the script `scripts/entrypoint.sh`.   
 
-Note there are a few aspects of it that are not realistic :
-- In the simulation of step 2, `./toiPackage/toiPackageExecutorConfig.yaml`, which is part of the `toiPackage`, wouldn't have references to the libraries named in the `toiExecutor`.
+The script just 
+- copies the contents of `/toi/inputs` to `/toi/outputs`
+- copies the `cmdline` and `environ` files for the process from 
+  under the `/proc` directory to the `/toi/outputs` directory.
+
+Here is an example of what is collected :
+```
+./examples/complex/example-output/
+├── cmdline
+├── config
+├── environ
+├── ocmconfig
+├── ocmrepo
+└── parameters
+```
+
+
+
+## Complex - multiple of inputs of each resource type 
+
+This example component version is made up of the files below.  As the directory tree suggests, the component version contains multiple `toiPackages`, `toiExecutors`, library resources and additional resources.
+
+Each `toiExecutors` in this sample supports multiple actions however that isn't apparent from the file list below.
+
+The files `toiPackageTemplateLibraryOne.yaml` and `getCredentials.yaml` provide a wrapper around OCM's `getCredentials` function and a mock implementation of that function.  While `getCredentials.yaml` isn't actually part of the component version it 
+is used in `./scripts/simulateTOIWorkflowWithSpiffCLI.sh`.  ( See [below](#complex---simulating-spiff-operations-of-the-workflow) )
+
+```
+├── ocm
+│   └── component.yaml
+├── toiExecutor
+│   ├── toiExecutorOne.yaml
+│   ├── toiExecutorTemplateLibraryOne.yaml
+│   ├── toiExecutorTemplateLibraryTwo.yaml
+│   └── toiExecutorTwo.yaml
+└── toiPackage
+    ├── additionalResourceConfig.yaml
+    ├── additionalResourceCredentials.yaml
+    ├── additionalResourceReadme.yaml
+    ├── getCredentials.yaml
+    ├── toiPackageOne.yaml
+    ├── toiPackageTemplateLibraryOne.yaml
+    ├── toiPackageTemplateLibraryTwo.yaml
+    └── toiPackageTwo.yaml
+```
+
+Each file is structured such that its contribution is visible, if possible, in the final output.  e.g. 
+
+```
+toiPackageExecutorParameterMapping:
+  data: toiPackageExecutorParameterMapData
+  fromCredentials:
+    name: <REDACTED>
+    password: <REDACTED>
+  fromToiPackageConfigTemplate:
+    data: toiPackageConfigTemplateData
+    fromLibraryOne:
+      data: toiPackageTemplateLibraryOneData
+      fromLibrary2:
+        data: toiPackageTemplateLibraryTwoData
+    fromLibraryTwo:
+      data: toiPackageTemplateLibraryTwoData
+    fromParamsFromCLI:
+      data: paramsFromCLIData
+      fromLibraryOne:
+        data: toiPackageTemplateLibraryOneData
+        fromLibrary2:
+          data: toiPackageTemplateLibraryTwoData
+      fromLibraryTwo:
+        data: toiPackageTemplateLibraryTwoData
+```
+
+There are couple of aspects of this example that are not realistic : 
+- In the `toiPackageOne.yaml` and `toiPackageTwo.yaml` it is unlikely that there would references to 
+  the `toiExecutor` libraries at the locations `.executors[].config.toiPackageExecutorConfig`.
 
   The references are there just to show the possible dependencies as much as possible
 
-- In the simulation of step 5, `./userInput/parametersFromCLI.yaml`, which is provided by the user on the commandline, wouldn't have references to the libraries named in the `toiPackage`.
+- The user input, `./userInput/parametersFromCLI.yaml`, wouldn't have references to the libraries named in the `toiPackage`.
 
   The reason as the same as above.
 
-- In the simulation of step 5 the lambda expression defined in `getCredentials.yaml` used to simulate the [getCredentials](https://ocm.software/docs/cli-reference/help/toi-bootstrapping/#input-mapping-for-executors) function that OCM defines during spiff++ execution.
 
+Example commands for running the TOI installers in this example
+
+```
+# Runs whichever toiPackage is found first.  
+# Within that toiPackage the first executor supporting 'actionOne' gets executed
+HOME=./userInput ocm bootstrap cv -o out -c ./userInput/credentials-oci-from-vault.yaml -p ./userInput/parametersFromCLI.yaml actionOne 'directory::./ocm/component-archive//example.com/ocm/toi/helloworld:1.0.0'
+
+# Like above but explicitly specifying the package.
+# The name value specified on the command line is matched the against the resource names in the 
+# component version.
+# - name: toi-package-two  <-- Matches is against this
+#  version: *version
+#  type: toiPackage 
+#  input: 
+#    type: file 
+#    path: ../toiPackage/toiPackageTwo.yaml
+#
+HOME=./userInput ~/git-repos/ocm-toi-helloworld/tmp2/ocm bootstrap cv -o out -c ./userInput/credentials-oci-from-vault.yaml -p ./userInput/parametersFromCLI.yaml  actionOne 'directory::./ocm/component-archive//example.com/ocm/toi/helloworld:1.0.0' name=toi-package-two
+
+
+
+```
+
+
+### Complex - simulating spiff++ operations of the workflow 
+
+The script `./scripts/simulateTOIWorkflowWithSpiffCLI.sh` simulates the spiff++ operations steps #2, #5 and #6 of the workflow described above.
+
+As mentioned above `toiPackageTemplateLibraryOne.yaml` provides a wrapper function that will use a [lambda](https://github.com/mandelsoft/spiff?tab=readme-ov-file#-lambda-x-x--port-) that mocks OCM's getCredentials function if it is available and otherwise it will try to use OCM's getCredentials function.
+
+Using a wrapper like this in practice is a good idea as it will make it easier to test your install files.
 
 
 # Providing template configs to users
