@@ -32,7 +32,7 @@ executors: # The executor used will be the first with no actions or the first an
     environ: environ
 - actions:
   - actionThree
-  - actionfour
+  - actionFour
   resourceRef: # Doc says this is an array but it is really an optional field.  Issue [339](https://github.com/open-component-model/ocm-project/issues/339)
                # It can be an ociimage or a toiExecutor reource type.
     resource:
