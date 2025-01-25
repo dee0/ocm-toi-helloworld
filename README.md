@@ -141,9 +141,6 @@ An [ExecutorSpecifications](https://ocm.software/docs/cli-reference/help/toi-boo
 
    and then afterwards validating the result against the json schema `toiExecutor.schema` 
 
-   NOTE: If you expect spiff++ template elements from the libraries to be available 
-   for the following step you will need to escape them with `((!`.  An example of this is in `getCredentials` in the file `toiPackageTemplateLibraryOne.yaml`.
-
 3. Make executor config from:
    - toiExecutor.configTemplate.  This is a spiff template
    - Output from previous step
