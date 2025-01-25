@@ -147,11 +147,12 @@ An [ExecutorSpecifications](https://ocm.software/docs/cli-reference/help/toi-boo
 3. Make executor config from:
    - toiExecutor.configTemplate.  This is a spiff template
    - Output from previous step
+   - toiExecutor.templateLibraries.  These are references to resources in the component version *( optional )*
   
    Basically it is like `OCM` is running the command 
 
    ```
-   spiff++ merge toiExecutor.configTemplate [output from previous step]
+   spiff++ merge toiExecutor.configTemplate [output from previous step] toiExecutor.templateLibraries...
    ```
 
 4. Process Credential requests of [toiPackage](https://ocm.software/docs/cli-reference/help/toi-bootstrapping/#the-codetoipackagecode-resource) and [toiExecutor](https://ocm.software/docs/cli-reference/help/toi-bootstrapping/#the-codetoiexecutorcode-resource)
@@ -190,12 +191,9 @@ An [ExecutorSpecifications](https://ocm.software/docs/cli-reference/help/toi-boo
 7. Make user config from:
    - toiPackage.configTemplate.  This is a spiff template
    - Output from previous step
-  
-   Basically it is like `OCM` is running the command 
+   - toiPackage.templateLibraries.  These are references to resources in the component version
 
-   ```
-   spiff++ toiPackage.configTemplate [output from previous step]
-   ```
+   This step is similar to step #3 above.  
 
 8. perform 'parameter mapping' using 
 
