@@ -128,8 +128,7 @@ An [ExecutorSpecifications](https://ocm.software/docs/cli-reference/help/toi-boo
 1. Determine and load credentials file.   Will either be passed via -c on command line or will be TOICredentials in the current dir.
     The file is just an ocm configfile where only the credentials will be used 
 
-2. Make executor config from:
-   - toiExecutor.configTemplate.  This is a spiff template
+2. Make intermediate executor config from:
    - toiPackage.executors[].config.  Despite what OCM documentation says, this is a spiff template
    - toiExecutor.templateLibraries.  These are references to resources in the component version *( optional )*
    - toiExecutor.schema.  This is a reference to a json schema in the component version *(optional)*
@@ -137,12 +136,25 @@ An [ExecutorSpecifications](https://ocm.software/docs/cli-reference/help/toi-boo
    Basically it is like `OCM` is running the command 
 
    ```
-   spiff++ merge toiExecutor.configTemplate toiPackage.executors[].config toiExecutor.templateLibraries...
+   spiff++ merge toiPackage.executors[].config toiExecutor.templateLibraries...
    ```
 
    and then afterwards validating the result against the json schema `toiExecutor.schema` 
 
-3. Process Credential requests of [toiPackage](https://ocm.software/docs/cli-reference/help/toi-bootstrapping/#the-codetoipackagecode-resource) and [toiExecutor](https://ocm.software/docs/cli-reference/help/toi-bootstrapping/#the-codetoiexecutorcode-resource)
+   NOTE: If you expect spiff++ template elements from the libraries to be available 
+   for the following step you will need to escape them with `((!`.  An example of this is in `getCredentials` in the file `toiPackageTemplateLibraryOne.yaml`.
+
+3. Make executor config from:
+   - toiExecutor.configTemplate.  This is a spiff template
+   - Output from previous step
+  
+   Basically it is like `OCM` is running the command 
+
+   ```
+   spiff++ merge toiExecutor.configTemplate [output from previous step]
+   ```
+
+4. Process Credential requests of [toiPackage](https://ocm.software/docs/cli-reference/help/toi-bootstrapping/#the-codetoipackagecode-resource) and [toiExecutor](https://ocm.software/docs/cli-reference/help/toi-bootstrapping/#the-codetoiexecutorcode-resource)
 
     i.   Isolate those toiPackage credential requests which are named in toiPackage.executors[].credentialMapping 
 
@@ -153,7 +165,7 @@ An [ExecutorSpecifications](https://ocm.software/docs/cli-reference/help/toi-boo
 	
 	This process builds a set of CredentialRequests and the mappings.
 	
-4. Resolve credential requests collected from previous step
+5. Resolve credential requests collected from previous step
 
     This outputs [ocmconfig](https://github.com/open-component-model/ocm/blob/main/docs/reference/ocm_configfile.md) yaml and a map map[string]string where :
 	- the ocmconfig yaml just has the credentials data filled in with consumer 
@@ -164,9 +176,7 @@ An [ExecutorSpecifications](https://ocm.software/docs/cli-reference/help/toi-boo
 	NOTE: This means in the documentation of your installer you must be clear about what the 
 	credentials look like.    Perhaps this can be done with `ocm toi describe package [my package]` and the 'additional resources' which a user can extract using `ocm toi configuration bootstrap [my package]`
 	
-    
-5. Make user config ( named params in code ) from 
-    - toiPackage.configTemplate.  This is a spiff template
+6. Make intermediate user config ( named params in code ) from 
     - parameter passed on command line.  This is a spiff template even though documentation doesn't indicate this 
     - toiPackage.templateLibraries.  These are references to resources in the component version
     - toiPackage.schema.  This is a reference to a json schema in the component version
@@ -175,25 +185,35 @@ An [ExecutorSpecifications](https://ocm.software/docs/cli-reference/help/toi-boo
       - hasCredentials(string[,string])bool 
       - getCredentials(string[,string]) map[string}string | string 
 
-    To be clear, the above functions take a string argument and an optional second string argument.  The first is the key from the credential request.   If the second argument is not passed then the expression is looking for, or retrieving, a map containing the properties, e.g. user and password, of specified credential.   If a second argument is passed then the functions look for, or retrieve, the proprety of the same name from the credential identified by the first argument.
+    To be clear, the above functions take a string argument and an optional second string argument.  The first is the key from the credential request.   If the second argument is not passed then the expression is looking for, or retrieving, a map containing the properties, e.g. user and password, of specified credential.   If a second argument is passed then the functions look for, or retrieve, the proprety of the same name from the credential identified by the first argument.  
+
+7. Make user config from:
+   - toiPackage.configTemplate.  This is a spiff template
+   - Output from previous step
   
-6. perform 'parameter mapping' using 
+   Basically it is like `OCM` is running the command 
+
+   ```
+   spiff++ toiPackage.configTemplate [output from previous step]
+   ```
+
+8. perform 'parameter mapping' using 
 
     - toiPackage.executor[].parameterMapping 
     - user configuration output by from previous step ( step #5 ) 
 
    The process used is spiff processing similar to that in step 2 above.
 
-7. Set up files for the executable in the executor image 
+9. Set up files for the executable in the executor image 
 
     - `/toi/inputs/ocmconfig`  Output from step #4 above
     - `/toi/inputs/parameters`  Output from step #6 above.  User supplied parameters after being mapped/spiffed 
     - `/toi/inputs/config`  Output from step #2.  Configuration after being spiffed 
     - `/toi/inputs/ocmrepo`  Component descriptor downloaded from source repository
 
-8. Use docker to run a container with the arguments `[action] [component version]`.  The image will be the one named in the `imageRef` field of `toiExecutor`.   OCM assumes the image has an entry point defined.
+10. Use docker to run a container with the arguments `[action] [component version]`.  The image will be the one named in the `imageRef` field of `toiExecutor`.   OCM assumes the image has an entry point defined.
 
-9. Copy `/toi/outputs` from within the container to the current working directory or the location specified on the OCM command line.
+11. Copy `/toi/outputs` from within the container to the current working directory or the location specified on the OCM command line.
 
 # Examples 
 
