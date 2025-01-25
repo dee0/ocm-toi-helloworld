@@ -1,4 +1,4 @@
 toiPackageTemplateLibraryOne:
   data: toiPackageTemplateLibraryOneData
-  fromLibrary2: (( stub(toiPackageTemplateLibraryTwo) ))
+  fromLibraryTwo: (( stub(toiPackageTemplateLibraryTwo) ))
   getCredentials: ((! &temporary( lambda |x,y|->defined(stub(getCredentials)) ? stub(getCredentials)(x,y) :getCredentials(x,y) ) ))
