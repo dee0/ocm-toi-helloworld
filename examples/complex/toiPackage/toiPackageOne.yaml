@@ -66,7 +66,57 @@ configTemplate:
     fromParamsFromCLI: (( stub(paramsFromCLI) ))
     fromLibraryOne: (( stub(toiPackageTemplateLibraryOne) ))
     fromLibraryTwo: (( stub(toiPackageTemplateLibraryTwo) )) 
-#configScheme: # Should sort out this after things are working.  Is RawMessage ( like configTemplate above )
+configScheme: {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "paramsFromCLI": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "pattern": "^[a-zA-Z]+$"
+          },
+          "fromLibraryOne": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "pattern": "^[a-zA-Z]+$"
+              },
+              "fromLibraryTwo": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z]+$"
+                  }
+                },
+                "required": ["data"]
+              },
+              "getCredentials": {
+                "type": "string",
+                "pattern": "^\\(\\(\\s+&temporary\\(\\s+lambda\\s+.*\\)\\s+\\)\\)$"
+              }
+            },
+            "required": ["data", "fromLibraryTwo", "getCredentials"]
+          },
+          "fromLibraryTwo": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "pattern": "^[a-zA-Z]+$"
+              }
+            },
+            "required": ["data"]
+          }
+        },
+        "required": ["data", "fromLibraryOne", "fromLibraryTwo"]
+      }
+    },
+    "required": ["paramsFromCLI"]
+  }
 templateLibraries:
 - resource:
     name: toi-package-template-library-one
