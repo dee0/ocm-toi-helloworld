@@ -6,7 +6,57 @@ configTemplate:
   toiExecutorConfig:
     data: toiExecutorConfigData
     fromToiPackageExecutorConfig: (( stub(toiPackageExecutorConfig) ))
-#configScheme: # Raw json message like configTemplate above.  Cross checkeds
+configScheme: {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "toiPackageExecutorConfig": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "^[a-zA-Z]+$"
+                },
+                "fromLibraryOne": {
+                    "type": "object",
+                    "properties": {
+                        "data": {
+                            "type": "string",
+                            "minLength": 1,
+                            "pattern": "^[a-zA-Z]+$"
+                        },
+                        "fromLibraryTwo": {
+                            "type": "object",
+                            "properties": {
+                                "data": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "pattern": "^[a-zA-Z]+$"
+                                }
+                            },
+                            "required": ["data"]
+                        }
+                    },
+                    "required": ["data", "fromLibraryTwo"]
+                },
+                "fromLibraryTwo": { 
+                    "type": "object",
+                    "properties": {
+                        "data": {
+                            "type": "string",
+                            "minLength": 1,
+                            "pattern": "^[a-zA-Z]+$"
+                        }
+                    },
+                    "required": ["data"]
+                }
+            },
+            "required": ["data", "fromLibraryOne", "fromLibraryTwo"]
+        }
+    },
+    "required": ["toiPackageExecutorConfig"]
+  }
 templateLibraries: # Cross checked with doc and code
 - resource:
     name: toi-executor-template-library-one
