@@ -7,13 +7,11 @@ executors: # The executor used will be the first with no actions or the first an
                # It can be an ociimage or a toiExecutor reource type.
     resource:
       name: toi-executor-one 
-  # Should change simulation to use config below instead of stand alone file
   config:
     toiPackageExecutorConfig: 
       data: toiPackageExecutorConfigData 
       fromLibraryOne: (( stub(toiExecutorTemplateLibraryOne) ))
       fromLibraryTwo: (( stub(toiExecutorTemplateLibraryTwo) )) 
-  # Should change simulation to use parameterMapping below instead of stand alone file
   parameterMapping:
     toiPackageExecutorParameterMapping:
       data: toiPackageExecutorParameterMapData
@@ -37,13 +35,11 @@ executors: # The executor used will be the first with no actions or the first an
                # It can be an ociimage or a toiExecutor reource type.
     resource:
       name: toi-executor-two 
-  # Should change simulation to use config below instead of stand alone file
   config:
     toiPackageExecutorConfig: 
       data: toiPackageExecutorConfigData 
       fromLibraryOne: (( stub(toiExecutorTemplateLibraryOne) ))
       fromLibraryTwo: (( stub(toiExecutorTemplateLibraryTwo) )) 
-  # Should change simulation to use parameterMapping below instead of stand alone file
   parameterMapping:
     toiPackageExecutorParameterMapping:
       data: toiPackageExecutorParameterMapData
@@ -66,7 +62,57 @@ configTemplate:
     fromParamsFromCLI: (( stub(paramsFromCLI) ))
     fromLibraryOne: (( stub(toiPackageTemplateLibraryOne) ))
     fromLibraryTwo: (( stub(toiPackageTemplateLibraryTwo) )) 
-#configScheme: # Should sort out this after things are working.  Is RawMessage ( like configTemplate above )
+configScheme: {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "paramsFromCLI": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "pattern": "^[a-zA-Z]+$"
+          },
+          "fromLibraryOne": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "pattern": "^[a-zA-Z]+$"
+              },
+              "fromLibraryTwo": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z]+$"
+                  }
+                },
+                "required": ["data"]
+              },
+              "getCredentials": {
+                "type": "string",
+                "pattern": "^\\(\\(\\s+&temporary\\(\\s+lambda\\s+.*\\)\\s+\\)\\)$"
+              }
+            },
+            "required": ["data", "fromLibraryTwo", "getCredentials"]
+          },
+          "fromLibraryTwo": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "pattern": "^[a-zA-Z]+$"
+              }
+            },
+            "required": ["data"]
+          }
+        },
+        "required": ["data", "fromLibraryOne", "fromLibraryTwo"]
+      }
+    },
+    "required": ["paramsFromCLI"]
+  }
 templateLibraries:
 - resource:
     name: toi-package-template-library-one

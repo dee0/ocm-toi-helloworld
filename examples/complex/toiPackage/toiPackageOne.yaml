@@ -7,13 +7,11 @@ executors: # The executor used will be the first with no actions or the first an
                # It can be an ociimage or a toiExecutor reource type.
     resource:
       name: toi-executor-one 
-  # Should change simulation to use config below instead of stand alone file
   config:
     toiPackageExecutorConfig: 
       data: toiPackageExecutorConfigData 
       fromLibraryOne: (( stub(toiExecutorTemplateLibraryOne) ))
       fromLibraryTwo: (( stub(toiExecutorTemplateLibraryTwo) )) 
-  # Should change simulation to use parameterMapping below instead of stand alone file
   parameterMapping:
     toiPackageExecutorParameterMapping:
       data: toiPackageExecutorParameterMapData
@@ -37,13 +35,11 @@ executors: # The executor used will be the first with no actions or the first an
                # It can be an ociimage or a toiExecutor reource type.
     resource:
       name: toi-executor-two 
-  # Should change simulation to use config below instead of stand alone file
   config:
     toiPackageExecutorConfig: 
       data: toiPackageExecutorConfigData 
       fromLibraryOne: (( stub(toiExecutorTemplateLibraryOne) ))
       fromLibraryTwo: (( stub(toiExecutorTemplateLibraryTwo) )) 
-  # Should change simulation to use parameterMapping below instead of stand alone file
   parameterMapping:
     toiPackageExecutorParameterMapping:
       data: toiPackageExecutorParameterMapData
