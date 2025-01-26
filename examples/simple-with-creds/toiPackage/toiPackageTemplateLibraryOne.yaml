@@ -1,0 +1,3 @@
+toiPackageTemplateLibraryOne:
+  data: toiPackageTemplateLibraryOneData
+  getCredentials: ((! &temporary( lambda |x,y|->defined(stub(getCredentials)) ? stub(getCredentials)(x,y) :getCredentials(x,y) ) ))

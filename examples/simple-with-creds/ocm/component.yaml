@@ -1,0 +1,23 @@
+name: example.com/ocm/toi/helloworld
+version: &version 1.0.0
+provider:
+  name: example.com
+resources:
+- name: toi-installer-image
+  type: ociImage 
+  version: 1.0.3
+  access: 
+    type: ociArtifact 
+    imageReference: ghcr.io/dee0/ocm/toi/helloworld:1.0.3
+- name: toi-package-one
+  version: *version
+  type: toiPackage 
+  input: 
+    type: file 
+    path: ../toiPackage/toiPackageOne.yaml
+- name: toi-package-template-library-one
+  version: *version
+  type: file 
+  input: 
+    type: file 
+    path: ../toiPackage/toiPackageTemplateLibraryOne.yaml

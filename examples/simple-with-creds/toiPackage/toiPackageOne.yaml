@@ -1,0 +1,34 @@
+description: installPackageOne
+executors: # The executor used will be the first with no actions or the first an action matching what was specified by the user on the CLI.  If no match then error
+- actions:
+  - actionOne
+  resourceRef: 
+    resource:
+      name: toi-installer-image
+  parameterMapping:
+    toiPackageExecutorParameterMapping:
+      data: toiPackageExecutorParameterMapData
+      fromParamsFromCLI: (( stub(paramsFromCLI) ))
+      fromCredentials:
+        name: (( stub(paramsFromCLI).fromLibraryOne.getCredentials("myExecutorOCI", "user") ))
+        password: (( stub(paramsFromCLI).fromLibraryOne.getCredentials("myExecutorOCI", "password") ))
+  outputs: # It is an error to try and map a non-existent executor output.
+    inputs/config: config
+    inputs/ocmconfig: ocmconfig
+    inputs/ocmrepo: ocmrepo
+    inputs/parameters: parameters
+    cmdline: cmdline
+    environ: environ
+#configScheme: # Should sort out this after things are working.  Is RawMessage ( like configTemplate above )
+templateLibraries:
+- resource:
+    name: toi-package-template-library-one
+credentials:
+  myPackageOCI: 
+    consumerId:
+      type: OCIRegistry
+    description: Description of myPackageOCI
+    properties: 
+      user: OCI repository user  
+      password: OCI repository password  
+    optional: false
