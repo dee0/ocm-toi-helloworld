@@ -195,15 +195,15 @@ An [ExecutorSpecifications](https://ocm.software/docs/cli-reference/help/toi-boo
 8. perform 'parameter mapping' using 
 
     - toiPackage.executor[].parameterMapping 
-    - user configuration output by from previous step ( step #5 ) 
+    - user configuration output by from previous step ( step #7 ) 
 
    The process used is spiff processing similar to that in step 2 above.
 
 9. Set up files for the executable in the executor image 
 
-    - `/toi/inputs/ocmconfig`  Output from step #4 above
-    - `/toi/inputs/parameters`  Output from step #6 above.  User supplied parameters after being mapped/spiffed 
-    - `/toi/inputs/config`  Output from step #2.  Configuration after being spiffed 
+    - `/toi/inputs/ocmconfig`  Output from step #5 above
+    - `/toi/inputs/parameters`  Output from step #8 above.  User supplied parameters after being mapped/spiffed 
+    - `/toi/inputs/config`  Output from step #3.  Configuration after being spiffed 
     - `/toi/inputs/ocmrepo`  Component descriptor downloaded from source repository
 
 10. Use docker to run a container with the arguments `[action] [component version]`.  The image will be the one named in the `imageRef` field of `toiExecutor`.   OCM assumes the image has an entry point defined.
