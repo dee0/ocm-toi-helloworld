@@ -10,8 +10,8 @@ executors: # The executor used will be the first with no actions or the first an
       data: toiPackageExecutorParameterMapData
       fromParamsFromCLI: (( stub(paramsFromCLI) ))
       fromCredentials:
-        name: (( stub(paramsFromCLI).fromLibraryOne.getCredentials("myExecutorOCI", "user") ))
-        password: (( stub(paramsFromCLI).fromLibraryOne.getCredentials("myExecutorOCI", "password") ))
+        name: (( stub(paramsFromCLI).fromLibraryOne.getCredentials("myPackageOCI", "user") ))
+        password: (( stub(paramsFromCLI).fromLibraryOne.getCredentials("myPackageOCI", "password") ))
   outputs: # It is an error to try and map a non-existent executor output.
     inputs/config: config
     inputs/ocmconfig: ocmconfig

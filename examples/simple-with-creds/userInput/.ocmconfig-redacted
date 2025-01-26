@@ -1,0 +1,31 @@
+type: generic.config.ocm.software
+configurations:
+- type: memory.credentials.config.ocm.software
+  repoName: default
+  credentials:
+  - credentials:
+      authmeth: approle 
+      roleid: "my-role-id"
+      secretid: "my-secret-id"
+    credentialsName: myVault
+- type: credentials.config.ocm.software
+  consumers:
+  - identity:
+      type: OCIRegistry
+    credentials:
+      - type: HashiCorpVault 
+        serverURL: "https://myvault.example.com/"
+        mountPath: "my-engine/my-engine-root"
+        path: "my/path/to/my/secret"
+        credentialsName: "my-secret-name"
+  - identity:
+      type: HashiCorpVault
+    credentials:
+    - credentialsName: myVault
+      repoName: default
+      type: Memory
+- type: logging.config.ocm.software
+  contextType: default
+  settings:
+    defaultLevel: Warn
+  
