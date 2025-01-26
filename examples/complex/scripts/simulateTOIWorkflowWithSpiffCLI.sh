@@ -42,12 +42,12 @@ spiff++ --features control merge ./userInput/parametersFromCLI.yaml \
 spiff++ --features control merge <(yq '.configTemplate' toiPackage/toiPackageOne.yaml) \
   ${TMP}/ocm-toi-step6-output.yaml \
   ./toiPackage/toiPackageTemplateLibraryOne.yaml \
-  ./toiPackage/toiPackageTemplateLibraryTwo.yaml |& tee ${TMP}/ocm-toi-step5-output.yaml
+  ./toiPackage/toiPackageTemplateLibraryTwo.yaml |& tee ${TMP}/ocm-toi-step7-output.yaml
 
 : ======================
 : Perform step 8 of the TOI process 
 spiff++ --features control merge <(yq '.executors[0].parameterMapping' toiPackage/toiPackageOne.yaml) \
-  ${TMP}/ocm-toi-step5-output.yaml \
+  ${TMP}/ocm-toi-step7-output.yaml \
   ./toiPackage/getCredentials.yaml |& tee ${INPUTS}/parameters
 
 
