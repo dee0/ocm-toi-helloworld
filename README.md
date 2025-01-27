@@ -8,6 +8,7 @@
 - [OCM install workflow](#workflow)
 - [Examples](#examples)
   - [Complex - multiple of inputs of each resource type ](#complex---multiple-of-inputs-of-each-resource-type)
+  - [Simple - with credential requirementes](#simple---with-credential-requirementes)
 - [Providing template configs to users](#providing-template-configs-to-users)
 
 # Prerequisites 
@@ -230,8 +231,6 @@ Here is an example of what is collected :
 └── parameters
 ```
 
-
-
 ## Complex - multiple of inputs of each resource type 
 
 This example component version is made up of the files below.  As the directory tree suggests, the component version contains multiple `toiPackages`, `toiExecutors`, library resources and additional resources.
@@ -316,10 +315,7 @@ HOME=./userInput ocm bootstrap cv -o out -c ./userInput/credentials-oci-from-vau
 #
 HOME=./userInput ~/git-repos/ocm-toi-helloworld/tmp2/ocm bootstrap cv -o out -c ./userInput/credentials-oci-from-vault.yaml -p ./userInput/parametersFromCLI.yaml  actionOne 'directory::./ocm/component-archive//example.com/ocm/toi/helloworld:1.0.0' name=toi-package-two
 
-
-
 ```
-
 
 ### Complex - simulating spiff++ operations of the workflow 
 
@@ -328,6 +324,25 @@ The script `./scripts/simulateTOIWorkflowWithSpiffCLI.sh` simulates the spiff++ 
 As mentioned above `toiPackageTemplateLibraryOne.yaml` provides a wrapper function that will use a [lambda](https://github.com/mandelsoft/spiff?tab=readme-ov-file#-lambda-x-x--port-) that mocks OCM's getCredentials function if it is available and otherwise it will try to use OCM's getCredentials function.
 
 Using a wrapper like this in practice is a good idea as it will make it easier to test your install files.
+
+## Simple - with credential requirements
+
+This example component version is made up of the files below.  In contrast to the example [Complex - multiple of inputs of each resource type](#complex---multiple-of-inputs-of-each-resource-type) this examle is as simple as possible while 
+- requiring credentials 
+- showing the credential requirements in the output of `ocm toi describe package`
+- supporting ocm install simulation with spiff++ cli
+
+The files `toiPackageTemplateLibraryOne.yaml` and `getCredentials.yaml` provide a wrapper around OCM's `getCredentials` function and a mock implementation of that function.  While `getCredentials.yaml` isn't actually part of the component version it 
+is used in `./scripts/simulateTOIWorkflowWithSpiffCLI.sh`.  ( See [below](#complex---simulating-spiff-operations-of-the-workflow) )
+
+```
+├── ocm
+│   └── component.yaml
+└── toiPackage
+    ├── getCredentials.yaml
+    ├── toiPackageOne.yaml
+    └── toiPackageTemplateLibraryOne.yaml
+```
 
 
 # Providing template configs to users
