@@ -180,12 +180,6 @@ An [ExecutorSpecifications](https://ocm.software/docs/cli-reference/help/toi-boo
     - toiPackage.templateLibraries.  These are references to resources in the component version
     - toiPackage.schema.  This is a reference to a json schema in the component version
   
-    NOTE: Process is very similar to #2 above.   However a difference is that these functions are made available to the spiff templates 
-      - hasCredentials(string[,string])bool 
-      - getCredentials(string[,string]) map[string}string | string 
-
-    To be clear, the above functions take a string argument and an optional second string argument.  The first is the key from the credential request.   If the second argument is not passed then the expression is looking for, or retrieving, a map containing the properties, e.g. user and password, of specified credential.   If a second argument is passed then the functions look for, or retrieve, the proprety of the same name from the credential identified by the first argument.  
-
 7. Make user config from:
    - toiPackage.configTemplate.  This is a spiff template
    - Output from previous step
@@ -198,7 +192,12 @@ An [ExecutorSpecifications](https://ocm.software/docs/cli-reference/help/toi-boo
     - toiPackage.executor[].parameterMapping 
     - user configuration output by from previous step ( step #7 ) 
 
-   The process used is spiff processing similar to that in step 2 above.
+    NOTE: Process is very similar to #2 above.   However a difference is that these functions are made available to the spiff templates 
+      - hasCredentials(string[,string])bool 
+      - getCredentials(string[,string]) map[string}string | string 
+
+    To be clear, the above functions take a string argument and an optional second string argument.  The first is the key from the credential request.   If the second argument is not passed then the expression is looking for, or retrieving, a map containing the properties, e.g. user and password, of specified credential.   If a second argument is passed then the functions look for, or retrieve, the proprety of the same name from the credential identified by the first argument.  
+
 
 9. Set up files for the executable in the executor image 
 
